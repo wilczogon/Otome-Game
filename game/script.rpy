@@ -1,34 +1,29 @@
-﻿## The script of the game goes in this file.
+﻿# in-game characters
+define me = Character('[alicja]')
+define alicja = 'Ja'
+define pan_kruk = Character('???')
 
-## Declare characters used by this game. The color argument colorizes the name
-## of the character.
+# background images
+image black = "#000"
+image outside_school = im.FactorScale(Image("outside_school.jpg"), width=2.5)
+image corridor = im.FactorScale(Image("corridor.jpg"), width=1)
+image room = im.FactorScale(Image("room.jpg"), width=2)
+image classroom = im.FactorScale(Image("classroom.jpg"), width=5)
 
-define e = Character('Eileen')
+# character images
+image pan kruk = im.FactorScale(Image("pan kruk.png"), width=1.3)
 
-
-## The game starts here.
+init python:
+    import datetime
+    import random
+    
+    random.seed()
 
 label start:
-
-    ## Show a background. This uses a placeholder by default, but you can add a
-    ## file (named either "bg room.png" or "bg room.jpg") to the images
-    ## directory to show it.
-
-    scene bg room
-
-    ## This shows a character sprite. A placeholder is used, but you can replace
-    ## it by adding a file named "eileen happy.png" to the images directory.
-
-    show eileen happy
-
-    ## These display lines of dialogue.
-
-    "Hello, world."
-
-    e "You've created a new Ren'Py game."
-
-    e "Once you add a story, pictures, and music, you can release it to the world!"
-
-    ## This ends the game.
+    call world_init
+    
+    call introduction
+    
+    jump world_loop
 
     return
