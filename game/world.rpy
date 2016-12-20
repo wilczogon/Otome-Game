@@ -6,6 +6,25 @@ label world_init:
             EVENING = 2
             NIGHT = 3
             
+        class Weekday:
+            PONIEDZIALEK = 0
+            WTOREK = 1
+            SRODA = 2
+            CZWARTEK = 3
+            PIATEK = 4
+            SOBOTA = 5
+            NIEDZIELA = 6
+            
+        weekday = {
+            Weekday.PONIEDZIALEK: 'poniedziałek',
+            Weekday.WTOREK: 'wtorek',
+            Weekday.SRODA: 'środa',
+            Weekday.CZWARTEK: 'czwartek',
+            Weekday.PIATEK: 'piątek',
+            Weekday.SOBOTA: 'sobota',
+            Weekday.NIEDZIELA: 'niedziela'
+        }
+            
         date = datetime.date(2016, 9, 1)
         day_time = DayTime.MORNING
         game_characters = []
@@ -24,7 +43,8 @@ label world_init:
                 pass # TODO - enable discovery
                 
             
-        
+    call special_events_init
+    call weekend_init
     call school_character_init
     call jacob_init(game_characters)
     call grzegorz_init(game_characters)
@@ -39,7 +59,18 @@ label world_loop:
     pause 1
     
     "Kolejny poranek."
-    "Dzisiaj mamy wtorek."
+    $nazwa_dnia = weekday.get(date.weekday())
+    "Dzień tygodnia: [nazwa_dnia]"
+    
+    $specjalny_dzien = isSpecialEventDay(date.weekday())
+    $weekend = isWeekend(date.weekday())
+    
+    if specjalny_dzien:
+        jump special_events
+        
+    if weekend:
+        jump weekend
+        
     "Zbieram się i idę do szkoły."
     
     scene outside_school with dissolve
@@ -76,6 +107,8 @@ label world_loop:
     
     "Kolejny dzień chyli się ku wieczorowi."
     "Odrabiam lekcje, odpoczywam i w końcu zasypiam."
+    
+label koniec_dnia:
     
     $ date = date + datetime.timedelta(days=1)
     
